@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block 'title' %}
+    Cadastrar Produto
+{% endblock 'title' %}
+
+{% block 'body' %}
+    <div class="container">
+        <h1>Cadastrar Produto</h1>
+        <div class="container">
+            <form action="{% url "cadastro_produto" %}" method="post" class="form-control">{% csrf_token %}
+                <label for="nome" class="form-label">Nome do Produto</label>
+                <input type="text" name="nome" id="nome" class="form-control" required>
+                <label for="descricao" class="form-label">Descrição do Produto</label>
+                <textarea name="descricao" id="descricao" class="form-control" required></textarea>
+                <label for="preco" class="form-label">Preço do Produto</label>
+                <input type="number" step=".01" name="preco" id="preco" class="form-control" required>
+                <label for="qtd_estoque" class="form-label">Quantidade em Estoque</label>
+                <input type="number" name="qtd_estoque" id="qtd_estoque" class="form-control" required>
+                <div class="col-3">
+                    <label for="ativo" class="form-label">Disponivel para compra</label>
+                    <select name="ativo" id="ativo" class="form-select" required>
+                        <option selected>Selecionar</option>
+                        <option value="1">Sim</option>
+                        <option value="0">Não</option>
+                    </select>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+{% endblock 'body' %}
+
