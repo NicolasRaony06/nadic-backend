@@ -10,6 +10,15 @@
         <br>
         <h1>Produtos</h1>
         <br>
+        <a href="{% url "cadastro_produto" %}" class="btn btn-success">Cadastrar Produto</a>
+        <br>
+        {% if messages %}
+            {% for message in messages %}
+                <br>
+                <div class="col-5"><span class="alert {{message.tags}}">{{message}}</span></div>
+            {% endfor %}
+        {% endif %}
+        <br>
         <div class="d-flex flex-wrap gap-3">
             {% for produto in produtos %}
                 <div class="card" style="width: 18rem;">
@@ -20,7 +29,8 @@
                         <p class="card-text">{{produto.descricao}}</p>
                         <h6 class="card-subtitle text-muted">Preço</h6>
                         <p class="card-text">{{produto.preco}}</p>
-                        <a href="#" class="btn btn-primary">Ver mais</a>
+                        <a href="{% url "editar_produto" produto.id %}" class="btn btn-primary">Editar</a>
+                        <a href="{% url "deletar_produto" produto.id %}" class="btn btn-danger">Deletar</a>
                     </div>
                 </div>
             {% endfor %}

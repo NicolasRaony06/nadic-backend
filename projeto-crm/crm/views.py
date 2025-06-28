@@ -31,10 +31,10 @@ def cadastro(request):
             produto.save()
         except:
             add_message(request, constants.ERROR, "Erro ao tentar cadastrar o produto!")
-            return redirect('cadastro_produto')
+            return redirect('view_produtos')
         
         add_message(request, constants.SUCCESS, "Produto cadastrado com sucesso!")
-        return redirect('cadastro_produto')
+        return redirect('view_produtos')
     
 def editar_produto(request, id):
     if request.method == 'GET':
@@ -54,11 +54,19 @@ def editar_produto(request, id):
             produto.save()
         except:
             add_message(request, constants.ERROR, "Erro ao tentar atualizar produto!")
-            return redirect('cadastro_produto')
+            return redirect('view_produtos')
             
         add_message(request, constants.SUCCESS, "Produto atualizado com sucesso!")
-        return redirect('cadastro_produto')
+        return redirect('view_produtos')
     
 def deletar_produto(request, id):
     if request.method == 'GET':
-        return redirect('cadastro_produto')
+        try:
+            produto = Produto.objects.get(id=id)
+            produto.delete()
+        except:
+            add_message(request, constants.ERROR, "Erro ao tentar deletar produto!")
+            return redirect('view_produtos')
+        
+        add_message(request, constants.SUCCESS, "Produto deletado com sucesso!")
+        return redirect('view_produtos')
