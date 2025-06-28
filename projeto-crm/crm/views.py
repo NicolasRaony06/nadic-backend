@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Produto
 from decimal import Decimal
+from django.contrib.messages import add_message, constants
 
 def cadastro(request):
     if request.method == 'GET':
@@ -24,7 +25,6 @@ def cadastro(request):
 
             produto.save()
         except:
-            print("Erro \n")
+            add_message(request, constants.ERROR, "Erro ao tentar cadastrar o produto!")
             return redirect('cadastro_produto')
-
         return redirect('cadastro_produto')

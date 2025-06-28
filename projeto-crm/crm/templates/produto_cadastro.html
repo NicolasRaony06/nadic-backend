@@ -7,7 +7,14 @@
 {% block 'body' %}
     <div class="container">
         <h1>Cadastrar Produto</h1>
+        <br>
         <div class="container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="col-5"><span class="alert {{message.tags}}">{{message}}</span></div>
+                {% endfor %}
+            {% endif %}
+            <br>
             <form action="{% url "cadastro_produto" %}" method="post" class="form-control">{% csrf_token %}
                 <label for="nome" class="form-label">Nome do Produto</label>
                 <input type="text" name="nome" id="nome" class="form-control" required>
