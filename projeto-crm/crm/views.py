@@ -4,6 +4,11 @@ from .models import Produto
 from decimal import Decimal
 from django.contrib.messages import add_message, constants
 
+def view_produtos(request):
+    if request.method == 'GET':
+        produtos = Produto.objects.all()
+        return render(request, 'view_produtos.html', {'produtos': produtos})
+
 def cadastro(request):
     if request.method == 'GET':
         return render(request, 'produto_cadastro.html')
@@ -52,4 +57,8 @@ def editar_produto(request, id):
             return redirect('cadastro_produto')
             
         add_message(request, constants.SUCCESS, "Produto atualizado com sucesso!")
+        return redirect('cadastro_produto')
+    
+def deletar_produto(request, id):
+    if request.method == 'GET':
         return redirect('cadastro_produto')

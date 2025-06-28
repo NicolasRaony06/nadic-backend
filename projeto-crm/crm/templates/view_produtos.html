@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block 'tittle' %}
+    Produtos
+{% endblock 'tittle' %}
+
+{% block 'body' %}
+    <div class="container">
+        <br>
+        <h1>Produtos</h1>
+        <br>
+        <div class="d-flex flex-wrap gap-3">
+            {% for produto in produtos %}
+                <div class="card" style="width: 18rem;">
+                    <img src="{% static 'img/card-default.png' %}" class="card-img-top" alt="imagem de produto">
+                    <div class="card-body">
+                        <h5 class="card-title">{{produto.nome}}</h5>
+                        <h6 class="card-subtitle text-muted">Descrição</h6>
+                        <p class="card-text">{{produto.descricao}}</p>
+                        <h6 class="card-subtitle text-muted">Preço</h6>
+                        <p class="card-text">{{produto.preco}}</p>
+                        <a href="#" class="btn btn-primary">Ver mais</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock 'body' %}
