@@ -70,3 +70,16 @@ def deletar_produto(request, id):
         
         add_message(request, constants.SUCCESS, "Produto deletado com sucesso!")
         return redirect('view_produtos')
+    
+def comprar_produtos(request):
+    if request.method == "POST":
+        produtos = request.POST.getlist('produtos_selecionados')
+
+        if len(produtos) < 1:
+            add_message(request, constants.INFO, "Nenhum produto foi selecionado para a compra")
+            return redirect('view_produtos')
+        
+        print(produtos)
+
+        add_message(request, constants.SUCCESS, "Produto comprado com sucesso!")
+        return redirect('view_produtos')

@@ -6,4 +6,5 @@ urlpatterns = [
     path('cadastro/', views.cadastro, name='cadastro_produto'),
     path('editar/<int:id>/', views.editar_produto, name='editar_produto'),
     path('deletar/<int:id>/', views.deletar_produto, name="deletar_produto"),
+    path('comprar/', views.comprar_produtos, name="comprar_produtos"),
 ]
