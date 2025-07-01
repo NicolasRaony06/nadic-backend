@@ -83,7 +83,7 @@ def comprar_produtos(request):
             add_message(request, constants.INFO, "Nenhum produto foi selecionado para a compra")
             return redirect('view_produtos')
         
-        print(produtos)
+        print(produtos, request.POST[f'quantidade_{produtos[0]}'])
 
         add_message(request, constants.SUCCESS, "Produto comprado com sucesso!")
         return redirect('view_produtos')

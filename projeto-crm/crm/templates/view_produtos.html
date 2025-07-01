@@ -39,6 +39,17 @@
                         <p class="card-text">{{ produto.descricao }}</p>
                         <h6 class="card-subtitle text-muted">Preço</h6>
                         <p class="card-text">{{ produto.preco }}</p>
+                        <label for="qtd_{{ produto.id }}">Quantidade:</label>
+                        <input type="number"
+                           name="quantidade_{{ produto.id }}"
+                           id="qtd_{{ produto.id }}"
+                           class="form-control"
+                           style="width: 90px;"
+                           value="1"
+                           min="1"
+                           max="{{ produto.qtd_estoque }}"
+                           required>
+                        <br>
                         <a href="{% url 'editar_produto' produto.id %}" class="btn btn-primary">Editar</a>
                         <a href="{% url 'deletar_produto' produto.id %}" class="btn btn-danger">Deletar</a>
                     </div>
