@@ -6,7 +6,11 @@ from django.contrib.messages import add_message, constants
 
 def view_produtos(request):
     if request.method == 'GET':
-        produtos = Produto.objects.all()
+        if request.GET.get('view_indisponivel'):
+            produtos = Produto.objects.filter(ativo=False)
+            return render(request, 'view_produtos.html', {'produtos': produtos})
+
+        produtos = Produto.objects.filter(ativo=True)
         return render(request, 'view_produtos.html', {'produtos': produtos})
 
 def cadastro(request):

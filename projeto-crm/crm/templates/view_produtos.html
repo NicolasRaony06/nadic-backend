@@ -11,6 +11,7 @@
     <h1>Produtos</h1>
     <br>
     <a href="{% url 'cadastro_produto' %}" class="btn btn-outline-primary">Cadastrar Produto</a>
+    <a href="{% url 'view_produtos' %}?view_indisponivel=true" class="btn btn-outline-secondary">Visualizar Produtos Indisponíveis</a>
     <br>
     {% if messages %}
         {% for message in messages %}
@@ -27,9 +28,9 @@
             {% for produto in produtos %}
                 <div class="card" style="width: 18rem; position: relative;">
                     <input type="checkbox"
-                           name="produtos_selecionados"
-                           value="{{ produto.id }}"
-                           style="position: absolute; top: 10px; left: 10px; transform: scale(1.3); z-index: 1;">
+                        name="produtos_selecionados"
+                        value="{{ produto.id }}"
+                        style="position: absolute; top: 10px; left: 10px; transform: scale(1.3); z-index: 1;">
 
                     <img src="{% static 'img/card-default.png' %}" class="card-img-top" alt="imagem de produto">
                     <div class="card-body">
