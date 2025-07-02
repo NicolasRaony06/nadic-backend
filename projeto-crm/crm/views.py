@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Produto
+from .models import Produto, Venda, ItemVenda
 from decimal import Decimal
 from django.contrib.messages import add_message, constants
 
@@ -82,8 +82,42 @@ def comprar_produtos(request):
         if len(produtos) < 1:
             add_message(request, constants.INFO, "Nenhum produto foi selecionado para a compra")
             return redirect('view_produtos')
-        
-        print(produtos, request.POST[f'quantidade_{produtos[0]}'])
+    
+        venda = Venda.objects.create()
+
+        valor_total = 0
+        for produto_id in produtos:
+            try:
+                produto = Produto.objects.get(id=int(produto_id))
+                qtd_produto = request.POST[f'quantidade_{produto_id}']
+
+                item = ItemVenda.objects.create(
+                    venda=venda,
+                    produto=produto,
+                    qtd_produto=int(qtd_produto),
+                    preco_und=produto.preco
+                )
+
+                produto.qtd_estoque -= int(qtd_produto)
+
+                if produto.qtd_estoque < 1:
+                    produto.ativo = False
+                
+                produto.save()
+
+                valor_total += item.subtotal()
+
+                item.save()
+            except:
+                add_message(request, constants.ERROR, f"Falha no registro de compra do produto {produto_id}")
+                return redirect('view_produtos')
+            
+        try:
+            venda.valor_total = valor_total
+            venda.save()
+        except:
+            add_message(request, constants.ERROR, f"Falha na tentativa de compra!")
+            return redirect('view_produtos')
 
         add_message(request, constants.SUCCESS, "Produto comprado com sucesso!")
         return redirect('view_produtos')
