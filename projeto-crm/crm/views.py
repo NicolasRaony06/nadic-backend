@@ -140,4 +140,4 @@ def dashboard_produtos(request):
             if valor_total > 0:
                 faturamento_per_produto.append((produto.nome, produto.preco, valor_total))
 
-        return render(request, 'dashboard_produtos.html', {'faturamento':faturamento, 'faturamento_per_produto': faturamento_per_produto})
+        return render(request, 'dashboard_produtos.html', {'faturamento':faturamento, 'faturamento_per_produto': faturamento_per_produto, 'vendas': vendas})

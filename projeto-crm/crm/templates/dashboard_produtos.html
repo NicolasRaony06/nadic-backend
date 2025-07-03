@@ -7,7 +7,7 @@
 {% block 'body' %}
     <div class="container">
         <br>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url "dashboard_produtos" %}">Dashboard</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,19 +19,13 @@
                 <a class="nav-link active" aria-current="page" href="#faturamento">Faturamento</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                <a class="nav-link active" aria-current="page" href="#vendas">Vendas</a>
                 </li>
             </ul>
             </div>
         </div>
         </nav>
-
+        <br>
         <div class="container">
             <section id="faturamento">
                 <br>
@@ -55,6 +49,33 @@
                             <td>{{faturamento.0}}</td>
                             <td>R${{faturamento.1}}</td>
                             <td>R${{faturamento.2}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </section>
+            <br>
+            <br>
+            <section id="vendas">
+                <br>
+                <h2>Total de vendas: {{vendas.count}}</h2>
+                <hr>
+                <br>
+                <h3>Tabela de vendas: </h3>
+                <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Valor Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for venda in vendas %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{venda.data_venda.date}}</td>
+                            <td>R${{venda.valor_total}}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
