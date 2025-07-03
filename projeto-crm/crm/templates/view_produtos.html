@@ -10,8 +10,11 @@
     <br>
     <h1>Produtos</h1>
     <br>
+    <!-- Restringir links após adicionar login e superuser -->
     <a href="{% url 'cadastro_produto' %}" class="btn btn-outline-primary">Cadastrar Produto</a>
     <a href="{% url 'view_produtos' %}?view_indisponivel=true" class="btn btn-outline-secondary">Visualizar Produtos Indisponíveis</a>
+    <a href="{% url 'dashboard_produtos' %}" class="btn btn-outline-info">Dashboard de Produtos</a>
+    <!-- // -->
     <br>
     {% if messages %}
         {% for message in messages %}
