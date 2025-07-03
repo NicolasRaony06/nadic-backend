@@ -121,3 +121,15 @@ def comprar_produtos(request):
 
         add_message(request, constants.SUCCESS, "Produto comprado com sucesso!")
         return redirect('view_produtos')
+    
+def dashboard_produtos(request):
+    if request.method == 'GET':
+        vendas = Venda.objects.all()
+
+        faturamento = 0
+        for venda in vendas:
+            faturamento += venda.valor_total
+
+        produtos = Produto.objects.all()
+
+        return render(request, 'dashboard_produtos.html', {'faturamento':faturamento})
