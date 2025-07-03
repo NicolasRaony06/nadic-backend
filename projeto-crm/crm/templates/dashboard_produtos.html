@@ -37,6 +37,28 @@
                 <br>
                 <h2>Faturamento da empresa: R${{faturamento}}</h2>
                 <hr>
+                <br>
+                <h3>Faturamento por produto: </h3>
+                <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Produto</th>
+                    <th scope="col">Preço</th>
+                    <th scope="col">Faturamento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for faturamento in faturamento_per_produto %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{faturamento.0}}</td>
+                            <td>R${{faturamento.1}}</td>
+                            <td>R${{faturamento.2}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
             </section>
         </div>
     </div>
