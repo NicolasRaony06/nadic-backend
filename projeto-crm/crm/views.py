@@ -5,13 +5,24 @@ from decimal import Decimal
 from django.contrib.messages import add_message, constants
 
 def view_produtos(request):
+    produtos = Produto.objects.all()
     if request.method == 'GET':
-        if request.GET.get('view_indisponivel'):
-            produtos = Produto.objects.filter(ativo=False)
-            return render(request, 'view_produtos.html', {'produtos': produtos})
+        filtro = request.GET.get('filter')
+        search_input = request.GET.get('search-input')
+        try: 
+            if filtro and search_input:
+                if filtro == 'name':
+                    produtos = produtos.filter(nome__icontains=search_input)
+                elif filtro == 'preco':
+                    produtos = produtos.filter(preco=Decimal(search_input))
+        except:
+            add_message(request, constants.ERROR, "Erro ao tentar filtrar o produto!")
+            return redirect('view_produtos')
 
-        produtos = Produto.objects.filter(ativo=True)
-        return render(request, 'view_produtos.html', {'produtos': produtos})
+        if request.GET.get('view_indisponivel'):
+            return render(request, 'view_produtos.html', {'produtos': produtos.filter(ativo=False)})
+
+        return render(request, 'view_produtos.html', {'produtos': produtos.filter(ativo=True)})
 
 def cadastro(request):
     if request.method == 'GET':

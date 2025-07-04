@@ -23,6 +23,18 @@
         {% endfor %}
     {% endif %}
     <br>
+    <div class="col-8">
+        <form class="d-flex">
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search-input" id="search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+            <select class="form-select" name="filter" style="margin-left: 15px; width: 25%;" aria-label="Default select example" required>
+                <option selected>Filtrar por:</option>
+                <option value="name">Nome</option>
+                <option value="preco">Preço</option>
+            </select>
+        </form>
+    </div>
+    <br>
     <form method="POST" action="{% url 'comprar_produtos' %}">
         <button type="submit" class="btn btn-success d-flex justify-content-end">Comprar</button>
         <br>
