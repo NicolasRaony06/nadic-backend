@@ -143,7 +143,9 @@ def dashboard_produtos(request):
 
         produtos = Produto.objects.all()
         faturamento_per_produto = []
+        estoque_total = 0
         for produto in produtos:
+            estoque_total += produto.qtd_estoque
             valor_total = 0
             for item in ItemVenda.objects.filter(produto=produto):
                 valor_total += item.subtotal()
@@ -151,4 +153,4 @@ def dashboard_produtos(request):
             if valor_total > 0:
                 faturamento_per_produto.append((produto.nome, produto.preco, valor_total))
 
-        return render(request, 'dashboard_produtos.html', {'faturamento':faturamento, 'faturamento_per_produto': faturamento_per_produto, 'vendas': vendas})
+        return render(request, 'dashboard_produtos.html', {'faturamento':faturamento, 'faturamento_per_produto': faturamento_per_produto, 'vendas': vendas, 'produtos': produtos, 'estoque_total': estoque_total})
