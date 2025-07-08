@@ -20,6 +20,7 @@ from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('usuario/', include('usuario.urls')),
     path('produtos/', include('crm.urls')),
     path('', lambda request: redirect('view_produtos'))
 ]
