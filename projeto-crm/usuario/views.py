@@ -64,4 +64,23 @@ def login(request):
 
     if request.method == 'GET':
         return render(request, 'login.html')
+    
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        senha = request.POST.get('senha')
+
+        user = auth.authenticate(request, username=str(nome).strip().lower(), password=senha)
+
+        if user:
+            auth.login(request, user)
+            add_message(request, constants.SUCCESS, "Login feito com sucesso!")
+            return redirect('view_produtos')
+        else:
+             add_message(request, constants.ERROR, "Usuário ou senha estão incorretos")
+             return redirect('login')
+        
+
+        '''add_message(request, constants.ERROR, "Erro ao fazer login!")
+        return redirect('login')'''
+
         
