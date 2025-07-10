@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+def is_logged(request):
+    if request.user.is_authenticated:
+        return True
+    return False

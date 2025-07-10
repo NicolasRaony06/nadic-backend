@@ -3,9 +3,14 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.contrib.messages import add_message, constants
 from django.contrib.auth.decorators import login_required
+from .models import is_logged
 
 
 def cadastrar(request):
+    if is_logged(request):
+        add_message(request, constants.WARNING, "Você já está cadastrado e logado!")
+        return redirect("view_produtos")
+
     if request.method == 'GET':
         return render(request, 'cadastrar_usuario.html')
     
@@ -39,6 +44,12 @@ def cadastrar(request):
                 email=email,
                 password=senha
             )
+
+            user = auth.authenticate(request, username=str(nome).strip().lower(), password=senha)
+
+            if user:
+                auth.login(request, user)
+                
         except:
             add_message(request, constants.ERROR, "Erro ao tentar cadastrar o usuário!")
             return redirect('cadastrar_usuario')
