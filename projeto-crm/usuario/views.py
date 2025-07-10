@@ -83,4 +83,17 @@ def login(request):
         '''add_message(request, constants.ERROR, "Erro ao fazer login!")
         return redirect('login')'''
 
+def logout(request):
+    if not is_logged(request):
+        add_message(request, constants.WARNING, "Você não está logado!")
+        return redirect("login")
+    
+    if request.method == 'GET':
+        try:
+            auth.logout(request)
+            add_message(request, constants.SUCCESS, "Logout feito com sucesso!")
+            return redirect('login')
+        except:
+            add_message(request, constants.ERROR, "Erro ao tentar fazer logout")
+            return redirect('view_produtos')
         
