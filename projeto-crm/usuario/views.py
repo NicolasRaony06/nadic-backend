@@ -56,4 +56,12 @@ def cadastrar(request):
         
         add_message(request, constants.SUCCESS, "Usuário cadastrado com sucesso!")
         return redirect('view_produtos')
+    
+def login(request):
+    if is_logged(request):
+        add_message(request, constants.WARNING, "Você já está logado!")
+        return redirect("view_produtos")
+
+    if request.method == 'GET':
+        return render(request, 'login.html')
         
