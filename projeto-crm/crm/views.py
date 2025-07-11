@@ -117,25 +117,30 @@ def comprar_produtos(request):
         for produto_id in produtos:
             try:
                 produto = Produto.objects.get(id=int(produto_id))
-                qtd_produto = request.POST[f'quantidade_{produto_id}']
 
-                item = ItemVenda.objects.create(
-                    venda=venda,
-                    produto=produto,
-                    qtd_produto=int(qtd_produto),
-                    preco_und=produto.preco
-                )
+                if produto.ativo:
+                    qtd_produto = request.POST[f'quantidade_{produto_id}']
 
-                produto.qtd_estoque -= int(qtd_produto)
+                    item = ItemVenda.objects.create(
+                        venda=venda,
+                        produto=produto,
+                        qtd_produto=int(qtd_produto),
+                        preco_und=produto.preco
+                    )
 
-                if produto.qtd_estoque < 1:
-                    produto.ativo = False
-                
-                produto.save()
+                    produto.qtd_estoque -= int(qtd_produto)
 
-                valor_total += item.subtotal()
+                    if produto.qtd_estoque < 1:
+                        produto.ativo = False
+                    
+                    produto.save()
 
-                item.save()
+                    valor_total += item.subtotal()
+
+                    item.save()
+                else:
+                    add_message(request, constants.ERROR, f"O produto n°:{produto_id} está inativo!")
+                    return redirect('view_produtos')
             except:
                 add_message(request, constants.ERROR, f"Falha no registro de compra do produto {produto_id}")
                 return redirect('view_produtos')
