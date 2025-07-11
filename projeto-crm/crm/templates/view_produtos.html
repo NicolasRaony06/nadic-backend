@@ -9,13 +9,13 @@
 <div class="container">
     <br>
     <h1>Produtos</h1>
-    <br>
-    <!-- Restringir links após adicionar login e superuser -->
-    <a href="{% url 'cadastro_produto' %}" class="btn btn-outline-primary">Cadastrar Produto</a>
-    <a href="{% url 'view_produtos' %}?view_indisponivel=true" class="btn btn-outline-secondary">Visualizar Produtos Indisponíveis</a>
-    <a href="{% url 'dashboard_produtos' %}" class="btn btn-outline-info">Dashboard de Produtos</a>
-    <!-- // -->
-    <br>
+    {% if request.user.is_superuser %}
+        <br>
+        <a href="{% url 'cadastro_produto' %}" class="btn btn-outline-primary">Cadastrar Produto</a>
+        <a href="{% url 'view_produtos' %}?view_indisponivel=true" class="btn btn-outline-secondary">Visualizar Produtos Indisponíveis</a>
+        <a href="{% url 'dashboard_produtos' %}" class="btn btn-outline-info">Dashboard de Produtos</a>
+        <br>
+    {% endif %}
     {% if messages %}
         {% for message in messages %}
             <br>
@@ -36,8 +36,10 @@
     </div>
     <br>
     <form method="POST" action="{% url 'comprar_produtos' %}">
-        <button type="submit" class="btn btn-success d-flex justify-content-end">Comprar</button>
-        <br>
+        {% if request.user.is_authenticated and not view_indisponivel %}
+            <button type="submit" class="btn btn-success d-flex justify-content-end">Comprar</button>
+            <br>
+        {% endif %}
         {% csrf_token %}
         <div class="d-flex flex-wrap gap-3">
             {% for produto in produtos %}
@@ -64,9 +66,11 @@
                            min="1"
                            max="{{ produto.qtd_estoque }}"
                            required>
-                        <br>
-                        <a href="{% url 'editar_produto' produto.id %}" class="btn btn-primary">Editar</a>
-                        <a href="{% url 'deletar_produto' produto.id %}" class="btn btn-danger">Deletar</a>
+                        {% if request.user.is_superuser %}
+                            <br>
+                            <a href="{% url 'editar_produto' produto.id %}" class="btn btn-primary">Editar</a>
+                            <a href="{% url 'deletar_produto' produto.id %}" class="btn btn-danger">Deletar</a>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}

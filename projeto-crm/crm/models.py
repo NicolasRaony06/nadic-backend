@@ -31,3 +31,8 @@ class ItemVenda(models.Model):
 
     def __str__(self):
         return f"{self.produto.nome},{self.preco_und}"  
+    
+def is_superuser(request):
+    if request.user.is_superuser:
+        return True
+    return False

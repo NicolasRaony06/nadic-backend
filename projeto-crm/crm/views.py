@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Produto, Venda, ItemVenda
+from .models import Produto, Venda, ItemVenda, is_superuser
 from decimal import Decimal
 from django.contrib.messages import add_message, constants
+from django.contrib.auth.decorators import login_required
 
 def view_produtos(request):
     produtos = Produto.objects.all()
@@ -19,12 +20,17 @@ def view_produtos(request):
             add_message(request, constants.ERROR, "Erro ao tentar filtrar o produto!")
             return redirect('view_produtos')
 
-        if request.GET.get('view_indisponivel'):
+        if request.GET.get('view_indisponivel') and is_superuser(request):
             return render(request, 'view_produtos.html', {'produtos': produtos.filter(ativo=False)})
 
         return render(request, 'view_produtos.html', {'produtos': produtos.filter(ativo=True)})
 
+@login_required(login_url="login")
 def cadastro(request):
+    if not is_superuser(request):
+        add_message(request, constants.WARNING, "Você não tem acesso para isso!")
+        return redirect('view_produtos')
+
     if request.method == 'GET':
         return render(request, 'produto_cadastro.html')
     if request.method == 'POST':
@@ -50,8 +56,13 @@ def cadastro(request):
         
         add_message(request, constants.SUCCESS, "Produto cadastrado com sucesso!")
         return redirect('view_produtos')
-    
+
+@login_required(login_url="login")  
 def editar_produto(request, id):
+    if not is_superuser(request):
+        add_message(request, constants.WARNING, "Você não tem acesso para isso!")
+        return redirect('view_produtos')
+    
     if request.method == 'GET':
         produto = Produto.objects.get(id=id)
         return render(request, "produto_editar.html", {'produto': produto})
@@ -73,8 +84,13 @@ def editar_produto(request, id):
             
         add_message(request, constants.SUCCESS, "Produto atualizado com sucesso!")
         return redirect('view_produtos')
-    
+
+@login_required(login_url="login") 
 def deletar_produto(request, id):
+    if not is_superuser(request):
+        add_message(request, constants.WARNING, "Você não tem acesso para isso!")
+        return redirect('view_produtos')
+    
     if request.method == 'GET':
         try:
             produto = Produto.objects.get(id=id)
@@ -85,7 +101,8 @@ def deletar_produto(request, id):
         
         add_message(request, constants.SUCCESS, "Produto deletado com sucesso!")
         return redirect('view_produtos')
-    
+
+@login_required(login_url="login") 
 def comprar_produtos(request):
     if request.method == "POST":
         produtos = request.POST.getlist('produtos_selecionados')
@@ -132,8 +149,13 @@ def comprar_produtos(request):
 
         add_message(request, constants.SUCCESS, "Produto comprado com sucesso!")
         return redirect('view_produtos')
-    
+
+@login_required(login_url="login")
 def dashboard_produtos(request):
+    if not is_superuser(request):
+        add_message(request, constants.WARNING, "Você não tem acesso para isso!")
+        return redirect('view_produtos')
+    
     if request.method == 'GET':
         vendas = Venda.objects.all()
 
